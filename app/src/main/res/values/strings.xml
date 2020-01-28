@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">baseDatos_28_01</string>
+    <string name="etCodigo">Código</string>
+    <string name="etNombre">Nombre</string>
+    <string name="etPrecio">PVP(€)</string>
+    <string name="btnCrear">Nuevo</string>
+    <string name="btnBorrar">Borrar</string>
+    <string name="btnBuscar">Buscar</string>
+    <string name="btnModificar">Modificar</string>
+</resources>
