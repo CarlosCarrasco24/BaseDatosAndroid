@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 public class ClaseConexion extends SQLiteOpenHelper {
     public final static String TABLA ="articulos";
     private final String campo1="codigo int primary key, ";
-    private final String campo2="nomnbre text,";
+    private final String campo2="nombre text,";
     private final String campo3="pvp real";
 
     public ClaseConexion(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {

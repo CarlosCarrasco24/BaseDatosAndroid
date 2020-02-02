@@ -13,6 +13,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
     private EditText etCodigo,etNombre,etPrecio;
     public final static String BBDD="Tienda";
+    public final static String TABLA ="articulos";
     String nombre,codigo,precio;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +53,8 @@ public class MainActivity extends AppCompatActivity {
 
         //me creo un registro
         ContentValues registro=new ContentValues();
-        registro.put("nombre",nombre);
         registro.put("codigo",codigo);
+        registro.put("nombre",nombre);
         registro.put("pvp",precio);
 
         //inserto los valores
@@ -66,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     }
     //Codigoboton buscar
     public void buscarArticulo(View v){
-        limpiar1();
+        //limpiar1();
             ClaseConexion miCon=new ClaseConexion(this, BBDD,null,1);
             SQLiteDatabase base=miCon.getReadableDatabase();
             if(etCodigo.getText().toString().trim().length()==0){
@@ -74,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
             codigo=etCodigo.getText().toString().trim();
-            Cursor fila=base.rawQuery("select nombre, pvp from articulos where codigo="+codigo,null);
+            Cursor fila=base.rawQuery("select nombre,pvp from articulos where codigo="+codigo,null);
             //este cursor tendra un registro o ninguno
         if(fila.moveToFirst()){
             etNombre.setText(fila.getString(0));
@@ -82,6 +83,29 @@ public class MainActivity extends AppCompatActivity {
         }else{
             Toast.makeText(this,"No se encontro ningun articulo con ese codigo!!!", Toast.LENGTH_LONG).show();
         }
+
+        base.close();
+    }
+    //Codigoboton modificar
+    public void modificarArticulo(View v){
+        ClaseConexion miCon=new ClaseConexion(this, BBDD,null,1);
+        SQLiteDatabase base=miCon.getWritableDatabase();
+        if(etCodigo.getText().toString().trim().length()==0||etNombre.getText().toString().trim().length()==0||etPrecio.getText().toString().trim().length()==0){
+            Toast.makeText(this,"Rellene los campos", Toast.LENGTH_LONG).show();
+            return;
+        }
+        codigo=etCodigo.getText().toString().trim();
+        nombre=etNombre.getText().toString().trim();
+        precio=etPrecio.getText().toString().trim();
+        ContentValues registro=new ContentValues();
+        registro.put("nombre",nombre);
+        registro.put("pvp",precio);
+           int i= base.update(TABLA,registro,"codigo" + "=?", new String[]{String.valueOf(codigo)});
+           if (i>0){
+               Toast.makeText(this,"Articulo modificado", Toast.LENGTH_LONG).show();
+           }else {
+               Toast.makeText(this,"Articulo no encontrado", Toast.LENGTH_LONG).show();
+           }
 
         base.close();
     }
